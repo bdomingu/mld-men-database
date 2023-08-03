@@ -1,0 +1,156 @@
+.textContainer {
+    background-color: #3A3A3A;
+    min-height: fit-content;
+    padding-top: 1px;   
+}
+
+.textContainer h1 {
+    font-family: 'Zilla Slab', serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1.875em;
+    color: #FFFFFF;
+    text-align: center;
+    padding-top: 30px;
+}
+
+.textContainer p{
+    font-family: 'Niramit', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    text-align: center;
+    color: #FFFFFF;
+    width: 70%;
+    margin: auto;
+}
+
+.videoContainer {
+    background-color: #121212;
+    min-height: fit-content;
+}
+
+.years{
+    display: flex;
+    list-style: none;
+    justify-content: center;
+    gap:10%;
+    padding-top:60px;
+}
+
+.years li{
+    font-family: 'Zilla Slab', serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 2em;
+    text-align: center;
+    color: #EAEAEA;
+    padding-bottom: 41px;
+}
+
+.line {
+    border-top: 2px solid #146DA6;
+    width: 72%;
+    margin: auto;
+   
+}
+
+.quarters {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    list-style: none;
+    gap: 4%;
+    padding-top: 20px;
+}
+
+.quarters li {
+    font-family: 'Zilla Slab', serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 2em;
+    text-align: center;
+    color: #EAEAEA;
+}
+
+@media only screen and (max-width:1044px){
+    .videoContainer {
+        min-height: fit-content;
+    }
+}
+
+@media only screen and (max-width:999px) {
+
+    .line {
+        width: 82%; 
+    }
+
+    .quarters {
+        gap: 10%;
+    }
+}
+
+@media only screen and (max-width:768px) {
+    .textContainer {
+        min-height: fit-content; 
+    }
+    
+    .textContainer p{
+        width: 80%;
+    }
+
+    .years{
+        gap:5%;
+    }
+   
+    .line {
+        width: 85%;
+       
+    }
+
+    .quarters {
+        gap: 15%;
+    }
+
+    .quarters li {
+        font-size: 1.5em;
+    }
+    
+}
+
+@media only screen and (max-width:679px) {
+    .videoContainer {
+        min-height: fit-content;
+    }
+}
+
+
+@media only screen and (max-width:468px) {
+    .textContainer {
+        min-height: fit-content; 
+    }
+
+    .textContainer h1 {
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-top: 10px;
+    }
+    .years li{
+      font-size: 1.2em;
+    }
+
+
+    .quarters li {
+        font-size: 1.2em;
+    }
+
+}
+
+@media only screen and (max-width:350px) {
+    .videoContainer {
+        min-height: fit-content; 
+    }
+
+
+
+}
