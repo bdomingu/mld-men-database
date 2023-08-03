@@ -9,10 +9,9 @@ import Videos from '../../components/Videos';
 
 
  const Video = () => {
-    const [selectedYear, setSelectedYear] = React.useState<string | undefined>(); 
-    const [selectedQuarter, setSelectedQuarter] = React.useState<string | undefined>();
+    const [selectedYear, setSelectedYear] = React.useState<string | undefined>('2023'); 
+    const [selectedQuarter, setSelectedQuarter] = React.useState<string | undefined>('Q1');
 
-    console.log(videoData)
     const years = ['2023', '2022', '2021', '2020', '2019']
     const quarters = ['Q1', 'Q2', 'Q3', 'Q4']
 
@@ -29,10 +28,7 @@ import Videos from '../../components/Videos';
     );
 
     const projectId = video ? video.projectId : undefined;
-    console.log(selectedYear)
-    console.log(selectedQuarter)
-    console.log(video)
-    console.log(projectId)
+  
     return (
         <Layout>
             <div className={styles.textContainer}>
@@ -45,7 +41,11 @@ import Videos from '../../components/Videos';
                 <div className={styles.years}>
                     {years.map((year) => {
                         return (
-                        <li onClick={() => handleYearClick(year)}>{year}</li>
+                        <li onClick={() => handleYearClick(year)}          
+                        className={selectedYear === year ? styles.selected : ''}
+                        >
+                        {year}
+                        </li>
                         )
                     })}
                 </div>
@@ -54,7 +54,10 @@ import Videos from '../../components/Videos';
                 <div className={styles.quarters}>
                     {quarters.map((quarter) => {
                         return (
-                        <li onClick={() => handleQuarterClick(quarter)}>{quarter}</li>
+                        <li onClick={() => handleQuarterClick(quarter)}
+                        className={selectedQuarter === quarter ? styles.selected : ''}
+                        >{quarter}
+                        </li>
                         )
                     })}
                 </div>
