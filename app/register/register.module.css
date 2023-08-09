@@ -1,13 +1,12 @@
 .container {
     background-color: #3A3A3A;
-    height: 754px;
     border-bottom: 3px solid #740000;
-    background-size: cover;
     padding-top: 2px;
+    height: fit-content;
 }
 
-.login {
-    margin: 100px auto;
+.signup {
+    margin: 60px auto;
     width:675px;
     max-width: 70%;
     
@@ -16,6 +15,7 @@
 .form {
     display: flex;
     flex-direction: column;
+    
 }
 
 .form label {
@@ -23,8 +23,8 @@
     font-style: normal;
     font-weight: 400;
     font-size: 1.25em;
-    line-height: 24px;
     color: #EAEAEA;
+    padding-bottom: 5px;
 }
 
 .form input {
@@ -32,6 +32,7 @@
     max-width: 100%;
     width:675px;
     height: 50px;
+    margin-bottom: 33px;
     color: #EAEAEA;
 }
 .button{
@@ -40,7 +41,6 @@
     padding-top: 60px;
     padding-bottom: 30px;
 }
-
 .form button {
     background: #121212;
     border: 1px solid #740000;
@@ -53,7 +53,6 @@
     text-align: center;
     text-transform: uppercase;
     color: #EAEAEA;
-    cursor: pointer;
 }
 
 
@@ -76,10 +75,47 @@
     padding: 20px;
 }
 
-.text {
-    display: flex;
-    justify-content: center; 
+.checkboxContainer {
+    padding-top: 31px;
 }
+
+.errors {
+    color: #EAEAEA;
+    font-family: 'Zilla Slab', serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1.25em;
+}
+/* Will need to add a toggle state so that the check functionality works OR will need to delete the 
+    appearance */
+
+.checkboxContainer input[type="checkbox"] {
+    width: 25px;
+    height: 25px;
+    margin-left: 26px;
+    vertical-align: middle;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border-radius: 3px;
+    border: 1px solid #000000;
+    background-color: #121212;
+  }
+
+
+.label {
+    margin-left: 80px;
+    margin-top: -60px;
+}
+
+.label label {
+    font-family: 'Zilla Slab';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1.5em;
+    color: #EAEAEA;
+}
+
 
 .text h3{
     font-family: 'Zilla Slab', serif;
@@ -90,10 +126,21 @@
     color: #EAEAEA;
 }
 
-.error{
-    color: #EAEAEA;
-    font-family: 'Zilla Slab', serif;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 1.25em;
+@media only screen and (max-width:445px) {
+    .button{
+        padding-top: 40px;
+    }
+
+    .flex a{
+        padding: 0px;
+    }
+
+    .checkboxContainer {
+        padding-top: 21px;
+    }
+
+    .label {
+        margin-left: 80px;
+        margin-top: -65px;
+    }
 }

@@ -7,6 +7,12 @@ import { useRouter } from "next/navigation";
 import Cookies from 'js-cookie';
 import Link from 'next/link';
 
+interface ResponseData {
+    token: string;
+    user: {
+        name: string;
+    } 
+}
 
 export default function Login() {
     const [userEmail, setUserEmail] = useState('');
@@ -14,6 +20,10 @@ export default function Login() {
     const [error, setError] = useState('');
     const router = useRouter();
 
+    function isResponseData(obj: any): obj is ResponseData {
+        return 'token' in obj && 'user' in obj && typeof obj.user.name === 'string';
+    }
+    
 
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>):Promise<void>  => {
         e.preventDefault();
@@ -25,17 +35,25 @@ export default function Login() {
             }
            
             const response = await axios.post('api/login', registeredUser)
-            
-            const token = await response.data.token
-            const user = await response.data.user.name
-            
-            const expirationDate = new Date(Date.now() + 60 * 60 * 1000); 
-            Cookies.set('token', token, {expires: expirationDate, path: '/'});
-            Cookies.set('user', user, {expires: expirationDate, path: '/'});
-            const status = response.status
-            if (status === 200){
-                router.push('/courseHome')
+
+             console.log(response)
+             if (isResponseData(response.data)) {
+                const responseData = response.data;
+                const token = responseData.token;
+                const user = responseData.user.name;
+
+                const expirationDate = new Date(Date.now() + 60 * 60 * 1000); 
+                Cookies.set('token', token, {expires: expirationDate, path: '/'});
+                Cookies.set('user', user, {expires: expirationDate, path: '/'});
+                const status = response.status
+                if (status === 200){
+                    router.push('/videos')
+                }
+            } else {
+                console.log('Token is missing in the response data')
             }
+        
+           
         } catch (error:any) {
             setError(error.response.data.message);
         }
@@ -65,7 +83,7 @@ export default function Login() {
                             value={userPassword}
                             onChange={(e) => setUserPassword(e.target.value)}
                             />
-                            {error}
+                            <p className={styles.error}>{error}</p>
                     <div className={styles.button}>
                     <button type='submit'>Login</button>
                     </div>

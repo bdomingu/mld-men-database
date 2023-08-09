@@ -7,6 +7,7 @@ import { config } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 
 
@@ -16,7 +17,8 @@ config.autoAddCss = false;
 export default function Nav() {
     const [showMenu, setShowMenu] = useState(false);
     const [loggedIn, setLoggedIn] = useState(false);
-   
+    const router = useRouter();
+
 
     useEffect(() => {
         if(Cookies.get("token")){
@@ -33,6 +35,7 @@ export default function Nav() {
         const status = response.status;
         if(status === 200) {
             Cookies.remove('token', { path: '/' })
+            Cookies.remove('user', { path: '/' })
             router.push('/')
         }
 
@@ -60,9 +63,6 @@ export default function Nav() {
                 <div className={showMenu ? styles.menuListActive : styles.menuList}>
                 <div className={styles.menu}>
                     <button onClick={handleLogout}>Logout</button>
-                    <Link href='/courseHome' className={styles.myCourses}><span >My Courses</span></Link>
-                    {/* <Link href='/home'><li>Video Archive</li></Link> */}
-
                 </div>
                 </div>
                 </> 
