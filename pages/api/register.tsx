@@ -41,7 +41,7 @@ const register = async (req:NextApiRequest, res:NextApiResponse) => {
         email:Yup.string()
         .email('Please enter a valid email.')
         .required('Email is required.')
-        .test("existingUser", "Use alrready exists", validateExistingUser),
+        .test("existingUser", "Use already exists", validateExistingUser),
         password:Yup.string()
         .min(8, 'Password must be at least 8 characters')
         .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/, 

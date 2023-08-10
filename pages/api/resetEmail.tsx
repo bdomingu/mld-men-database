@@ -14,7 +14,7 @@ import sequelize from "./db";
   }
 })();
 
-const secretKey = process.env.RESET_SECRET_KEY as string;
+const secretKey = process.env.NEXT_PUBLIC_RESET_SECRET_KEY as string;
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -33,16 +33,16 @@ const resetEmail = async (req:NextApiRequest, res:NextApiResponse) => {
             return res.status(400).send({message: 'Email is required.'})
         }
 
-        const token = jwt.sign({ email }, secretKey, {expiresIn:'1h'});
+        const token = jwt.sign({ email }, secretKey, {expiresIn:'10m'});
+        
+        // await ResetPassword.sync()
+        // const userEmail = new ResetPassword ({
+        //     email,
+        //     token: bcrypt.hashSync(token, 12),
+        // });
 
-        await ResetPassword.sync()
-        const userEmail = new ResetPassword ({
-            email,
-            token: bcrypt.hashSync(token, 12),
-        });
-
-        console.log(userEmail)
-        await userEmail.save();
+        // console.log(userEmail)
+        // await userEmail.save();
 
         const resetUrl = `${process.env.NEXT_PUBLIC_APP_URL}/reset_password?token=${token}`;
         const mailOptions = {

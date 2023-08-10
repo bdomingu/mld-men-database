@@ -1,11 +1,9 @@
-'use client'
 import Layout from "@/components/Layout";
 import styles from './register.module.css';
 import axios from 'axios';
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-// import { ToolTip, TextField} from '@material-ui-core';
 
 export default function Signup() {
     const [name, setName] = useState('');

@@ -1,10 +1,9 @@
-'use client'
 import React, { useEffect, useState  } from 'react';
-import Layout from '../../components/Layout';
+import Layout from '../components/Layout';
 import styles from './videos.module.css';
-import videoData from '../../assets/videoData';
+import videoData from '../assets/videoData';
 import Cookies from 'js-cookie';
-import Videos from '../../components/Videos';
+import Videos from '../components/Videos';
 import withAuth from "@/components/ProtectedRoute";
 import Loading from '@/components/Loading';
 

@@ -14,7 +14,7 @@ import sequelize from "./db";
     }
   })();
 
-  const secret = process.env.SECRET_KEY as string;
+  const secret = process.env.NEXT_PUBLIC_SECRET_KEY as string;
 
 
   const setTokenCookieMiddleware = (res: NextApiResponse, token: string) => {

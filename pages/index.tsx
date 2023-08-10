@@ -1,5 +1,4 @@
-'use client'
-import styles from "./home.module.css";
+import styles from "./index.module.css"
 import Link from "next/link";
 import Layout from '../components/Layout'
 import { useEffect } from 'react';
