@@ -49,7 +49,7 @@ export default function Nav() {
                 </div>
                 <div className={styles.text}>
                 <h2>Modern Life Dating</h2>
-                <h3>Video Archive</h3>
+                <h3>MEN Database</h3>
                 </div>
                
                 <button className={styles.menuButton} onClick={handleClick}>

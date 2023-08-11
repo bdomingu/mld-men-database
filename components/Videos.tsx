@@ -30,7 +30,7 @@ import ReactLoading from 'react-loading';
                  {videos.map((video: any) =>  {
                     return (
                     <>
-                    <div className={styles.card} key={video.resource_key} >
+                    <div className={styles.card} key="" >
                     <div className={styles.thumbnail}>
                         <iframe
                             loading="eager"

@@ -10,8 +10,6 @@ const secretKey = process.env.NEXT_PUBLIC_RESET_SECRET_KEY as string;
 
 const resetPassword = async (req:NextApiRequest, res:NextApiResponse) => {
 
-
-
     try{
     const token = req.query.token as string;
     const {password, confirmPassword } = req.body;

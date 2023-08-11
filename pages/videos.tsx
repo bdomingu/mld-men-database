@@ -8,7 +8,7 @@ import withAuth from "@/components/ProtectedRoute";
 import Loading from '@/components/Loading';
 import ReactLoading from 'react-loading';
 
-interface Folder {
+interface Course {
    folder: {
     name: string
     metadata: {
@@ -21,7 +21,7 @@ interface Folder {
    }
 }
 
-interface FolderResponse {
+interface CourseResponse {
     total: number;
     page: number;
     per_page: number;
@@ -29,7 +29,7 @@ interface FolderResponse {
     data: []; 
 }
 
-interface SubFolder {
+interface Year {
     folder: {
         name: string
         metadata:{
@@ -42,7 +42,7 @@ interface SubFolder {
     }
 }
 
-interface SubFolderResponse{
+interface YearResponse{
     total: number;
     page: number;
     per_page: number;
@@ -67,12 +67,15 @@ interface Video {
 
 
  const Video = () => {
-    const [folders, setFolders] = useState<Folder[]>([])
-    const [subFolders, setSubFolders] = useState<SubFolder[]>([])
+    const [courses, setCourses] = useState<Course[]>([])
+    const [years, setYears] = useState<Year[]>([])
     const [videos, setVideos] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isFetchLoading, setIsFetchLoading] = useState(false);
     const [isVideoLoading, setIsVideoLoading] = useState(false);
+    const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
+    const [selectedYear, setSelectedYear] = useState<Year | null>(null)
+
 
     const baseURL = 'projects/17319211/items'
     const vimeoToken = process.env.NEXT_PUBLIC_VIMEO_ACCESS_TOKEN as string
@@ -85,36 +88,42 @@ interface Video {
 
     useEffect(() => {
 
-        const fetchFolders = async () => {
+        const fetchCourses = async () => {
             try {
-                const response = await axios.get<FolderResponse>(`https://api.vimeo.com/me/${baseURL}`, {
+                const response = await axios.get<CourseResponse>(`https://api.vimeo.com/me/${baseURL}`, {
                     headers: {
                       Authorization: `Bearer ${vimeoToken}`, 
                     }
                   });
                 
                 const folders = await response.data.data;
-                setFolders(folders);
+                setCourses(folders.reverse());
             } catch(error) {
                 console.error(error);
             } finally {
                 setIsLoading(false)
             }
         };
-        fetchFolders();
+        fetchCourses();
     }, [])
 
-    const fetchSubFolders = async (url: string) => {
+    const handlecCourseClick = (uri: string, selectedCourse: Course) => {
+        fetchYears(uri, selectedCourse);
+        setVideos([]);
+    }
+
+    const fetchYears = async (url: string, selectedCourse: Course) => {
         try {
             setIsFetchLoading(true)
-            const response = await axios.get<SubFolderResponse>(`https://api.vimeo.com/${url}`, {
+            setSelectedCourse(selectedCourse)
+            const response = await axios.get<YearResponse>(`https://api.vimeo.com/${url}`, {
                 headers: {
                     Authorization: `Bearer ${vimeoToken}`, 
                   }
             })
 
             const subFolders = await response.data.data
-            setSubFolders(subFolders)
+            setYears(subFolders.reverse())
         } catch(error) {
             console.error(error);
         } finally {
@@ -122,9 +131,10 @@ interface Video {
         }
     }
 
-    const fetchVideos = async (videosUrl: string) => {
+    const fetchVideos = async (videosUrl: string, selectedYear: Year) => {
         try {
             setIsVideoLoading(true)
+            setSelectedYear(selectedYear)
             const response = await axios.get<VideoResponse>(`https://api.vimeo.com/${videosUrl}`, {
                 headers: {
                     Authorization: `Bearer ${vimeoToken}`, 
@@ -148,33 +158,34 @@ interface Video {
             ): (
                 <><div className={styles.textContainer}>
                         <h1>Courses</h1>
-                        <p>Lorem ipsum dolor sit amet consectetur. Lorem facilisis iaculis
-                            pretium sagittis eget. Sollicitudin feugiat iaculis justo lacus
-                            bibendum. Non in eu est nec laoreet in dignissim.</p>
+                        <p>Choose a course below to get started.</p>
                     </div><div className={styles.videoContainer}>
-                            <div className={styles.years}>
-                                {folders.map((folder) => {
+                            <div className={styles.courses}>
+                                {courses.map((course) => {
                                     return (
                                         <li 
-                                        onClick={() => fetchSubFolders(folder.folder.metadata.connections.items.uri)}
+                                        onClick={() => handlecCourseClick(course.folder.metadata.connections.items.uri, course)}
+                                        className={selectedCourse === course ? styles.selectedFolder : undefined}
                                         >
-                                        {folder.folder.name}
+                                        {course.folder.name}
                                         </li>
                                     );
                                 })}
                             </div>
 
                             <div className={styles.line}></div>
-                            <div className={styles.quarters}>
+                            <div className={styles.years}>
                                 {isFetchLoading ? (
                                     <ReactLoading type="bubbles" color="#146DA6" height={200} width={100}/>
                                 ): (
                                     <>
-                                    {subFolders.map((subFolder) => {
+                                    {years.map((year, index) => {
                                         return (
                                             <li 
-                                            onClick={() => fetchVideos(subFolder.folder.metadata.connections.videos.uri)}    
-                                            >{subFolder.folder.name}
+                                            onClick={() => fetchVideos(year.folder.metadata.connections.videos.uri, year)}
+                                            className={selectedYear === year ? styles.selectedFolder : undefined}
+                                            key={index}
+                                            >{year.folder.name}
                                             </li>
                                         );
                                     })}

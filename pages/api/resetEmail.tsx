@@ -33,7 +33,7 @@ const resetEmail = async (req:NextApiRequest, res:NextApiResponse) => {
             return res.status(400).send({message: 'Email is required.'})
         }
 
-        const token = jwt.sign({ email }, secretKey, {expiresIn:'10m'});
+        const token = jwt.sign({ email }, secretKey, {expiresIn:'1hr'});
         
         // await ResetPassword.sync()
         // const userEmail = new ResetPassword ({
