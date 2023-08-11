@@ -6,9 +6,6 @@ import * as Yup from 'yup';
 import { ValidationError } from "yup";
 
 
-/* look at not allowing the same password with yup 
-*/
-
 const secretKey = process.env.NEXT_PUBLIC_RESET_SECRET_KEY as string;
 
 const resetPassword = async (req:NextApiRequest, res:NextApiResponse) => {
@@ -24,7 +21,6 @@ const resetPassword = async (req:NextApiRequest, res:NextApiResponse) => {
         const decoded = jwt.verify(token, secretKey) as jwt.JwtPayload
         const email = decoded.email
 
-    
         const validationSchema = Yup.object().shape({
             password:Yup.string()
             .min(8, 'Password must be at least 8 characters')
@@ -47,13 +43,26 @@ const resetPassword = async (req:NextApiRequest, res:NextApiResponse) => {
             return res.status(500).json({ message: "Internal server error" });
         }
 
+        const user = await User.findOne({where: {email:email}});
+        const currentPassword = user?.password;
+
+        if (!currentPassword) {
+            return res.status(400).json({ message: "User not found" });
+        }
+
+        const isSamePassword = await bcrypt.compare(password, currentPassword);
+        if (isSamePassword) {
+            return res.status(400).json({ message: "New password cannot be the same as the previous password" });
+
+        }
+
         const hashedPassword = await bcrypt.hash(password, 12);
 
         User.update(
             {password: hashedPassword},
             {where: {email:email}}
         ).then(() => {
-            console.log('Record updated successfully.');
+            return res.status(201).json({ message: 'User registered successfully' });
         });
 
     } catch(err) {

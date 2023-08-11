@@ -22,7 +22,7 @@ const ResetPasswordPage = () => {
              }
              const response = await axios.post(`api/resetPassword/?token=${token}`, data)
              const status = response.status
-             if (status === 200) {
+             if (status === 201) {
                 router.push('/login')
              }
         } catch (error: any) {
@@ -57,6 +57,7 @@ const ResetPasswordPage = () => {
                         type="password"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)} />
+                    
                     {errors && errors.length > 0 && (
                         <div>
                             {errors.map((error: any) => {
@@ -66,7 +67,7 @@ const ResetPasswordPage = () => {
                             })}
                         </div>
                     )}
-                   {linkError && <p>{linkError}</p> }
+                   {linkError && <p className={styles.errors}>{linkError}</p> }
                     <button 
                     className={styles.button}
                     type="submit"

@@ -11,7 +11,7 @@ export default function Home() {
   useEffect(() => {
     const jwt = Cookies.get('token');
     if (jwt) {
-      router.replace('/courseHome'); 
+      router.replace('/videos'); 
     }
   }, [router]);
 

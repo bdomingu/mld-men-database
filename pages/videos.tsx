@@ -1,17 +1,81 @@
 import React, { useEffect, useState  } from 'react';
+import axios from 'axios';
 import Layout from '../components/Layout';
 import styles from './videos.module.css';
-import videoData from '../assets/videoData';
 import Cookies from 'js-cookie';
 import Videos from '../components/Videos';
 import withAuth from "@/components/ProtectedRoute";
 import Loading from '@/components/Loading';
+import ReactLoading from 'react-loading';
+
+interface Folder {
+   folder: {
+    name: string
+    metadata: {
+        connections: {
+            items:{
+                uri: string
+            }
+        }
+    }
+   }
+}
+
+interface FolderResponse {
+    total: number;
+    page: number;
+    per_page: number;
+    paging: object;
+    data: []; 
+}
+
+interface SubFolder {
+    folder: {
+        name: string
+        metadata:{
+            connections: {
+                videos: {
+                    uri: string
+                }
+            }
+        }
+    }
+}
+
+interface SubFolderResponse{
+    total: number;
+    page: number;
+    per_page: number;
+    paging: object;
+    data: []; 
+}
+
+interface VideoResponse{
+    total: number;
+    page: number;
+    per_page: number;
+    paging: object;
+    data: Video[]; 
+}
+
+interface Video {
+    uri: string;
+    name: string;
+    type: string;
+    player_embed_url: string;
+}
 
 
  const Video = () => {
-    const [selectedYear, setSelectedYear] = React.useState<string | undefined>('2023'); 
-    const [selectedQuarter, setSelectedQuarter] = React.useState<string | undefined>('Q1');
+    const [folders, setFolders] = useState<Folder[]>([])
+    const [subFolders, setSubFolders] = useState<SubFolder[]>([])
+    const [videos, setVideos] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [isFetchLoading, setIsFetchLoading] = useState(false);
+    const [isVideoLoading, setIsVideoLoading] = useState(false);
+
+    const baseURL = 'projects/17319211/items'
+    const vimeoToken = process.env.NEXT_PUBLIC_VIMEO_ACCESS_TOKEN as string
 
     useEffect(() => {
         if(Cookies.get("token")){
@@ -19,28 +83,69 @@ import Loading from '@/components/Loading';
         }     
     }, []);
 
-    const years = ['2023', '2022', '2021', '2020', '2019']
-    const quarters = ['Q1', 'Q2', 'Q3', 'Q4']
+    useEffect(() => {
 
-    const handleYearClick = (year: string) => {
-        setSelectedYear(year)
+        const fetchFolders = async () => {
+            try {
+                const response = await axios.get<FolderResponse>(`https://api.vimeo.com/me/${baseURL}`, {
+                    headers: {
+                      Authorization: `Bearer ${vimeoToken}`, 
+                    }
+                  });
+                
+                const folders = await response.data.data;
+                setFolders(folders);
+            } catch(error) {
+                console.error(error);
+            } finally {
+                setIsLoading(false)
+            }
+        };
+        fetchFolders();
+    }, [])
+
+    const fetchSubFolders = async (url: string) => {
+        try {
+            setIsFetchLoading(true)
+            const response = await axios.get<SubFolderResponse>(`https://api.vimeo.com/${url}`, {
+                headers: {
+                    Authorization: `Bearer ${vimeoToken}`, 
+                  }
+            })
+
+            const subFolders = await response.data.data
+            setSubFolders(subFolders)
+        } catch(error) {
+            console.error(error);
+        } finally {
+            setIsFetchLoading(false)
+        }
     }
 
-    const handleQuarterClick = (quarter: string) => {
-        setSelectedQuarter(quarter)
+    const fetchVideos = async (videosUrl: string) => {
+        try {
+            setIsVideoLoading(true)
+            const response = await axios.get<VideoResponse>(`https://api.vimeo.com/${videosUrl}`, {
+                headers: {
+                    Authorization: `Bearer ${vimeoToken}`, 
+                }
+            })
+
+            const videos = response.data.data
+            setVideos(videos)
+        } catch(error) {
+            console.error(error)
+        } finally {
+            setIsVideoLoading(false)
+        }
+
     }
-
-    const video = videoData.find(
-        (v) => v.year === selectedYear && v.quarter === selectedQuarter
-    );
-
-    const projectId = video ? video.projectId : undefined;
   
     return (
         <Layout>
             {isLoading ? (
-                <Loading />
-            ) : (
+                <Loading/>
+            ): (
                 <><div className={styles.textContainer}>
                         <h1>Courses</h1>
                         <p>Lorem ipsum dolor sit amet consectetur. Lorem facilisis iaculis
@@ -48,12 +153,12 @@ import Loading from '@/components/Loading';
                             bibendum. Non in eu est nec laoreet in dignissim.</p>
                     </div><div className={styles.videoContainer}>
                             <div className={styles.years}>
-                                {years.map((year) => {
+                                {folders.map((folder) => {
                                     return (
-                                        <li onClick={() => handleYearClick(year)}
-                                            className={selectedYear === year ? styles.selected : ''}
+                                        <li 
+                                        onClick={() => fetchSubFolders(folder.folder.metadata.connections.items.uri)}
                                         >
-                                            {year}
+                                        {folder.folder.name}
                                         </li>
                                     );
                                 })}
@@ -61,19 +166,25 @@ import Loading from '@/components/Loading';
 
                             <div className={styles.line}></div>
                             <div className={styles.quarters}>
-                                {quarters.map((quarter) => {
-                                    return (
-                                        <li onClick={() => handleQuarterClick(quarter)}
-                                            className={selectedQuarter === quarter ? styles.selected : ''}
-                                        >{quarter}
-                                        </li>
-                                    );
-                                })}
+                                {isFetchLoading ? (
+                                    <ReactLoading type="bubbles" color="#146DA6" height={200} width={100}/>
+                                ): (
+                                    <>
+                                    {subFolders.map((subFolder) => {
+                                        return (
+                                            <li 
+                                            onClick={() => fetchVideos(subFolder.folder.metadata.connections.videos.uri)}    
+                                            >{subFolder.folder.name}
+                                            </li>
+                                        );
+                                    })}
+                                    </>
+                                )}
+                                
                             </div>
-                            <Videos projectId={projectId} />
+                            <Videos videos={videos} isVideoLoading={isVideoLoading}/>
                         </div></>
             )}
-     
      </Layout>
        
     )

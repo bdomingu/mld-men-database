@@ -7,62 +7,27 @@ import ReactLoading from 'react-loading';
 
 
     type VideosProps = {
-     projectId: string | undefined;
+        videos: any[],
+        isVideoLoading: boolean
     };
 
-    interface Video {
-        
-    }
+  const Videos: React.FC<VideosProps> = ({ videos, isVideoLoading}) => {
+    // const [isLoading, setIsLoading] = useState(true);
 
-    interface VideoResponse {
-        total: number;
-        page: number;
-        per_page: number;
-        paging: object;
-        data: any[]; 
-    }
-
-  const Videos: React.FC<VideosProps> = ({ projectId }) => {
-    const [videos, setVideos] = useState<Video[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
 
 
     const router = useRouter();
 
-    const vimeoToken = process.env.NEXT_PUBLIC_VIMEO_ACCESS_TOKEN as string
-
-    useEffect(() => {
-
-        const fetchVideos = async () => {
-            try {
-                setIsLoading(true)
-                const response = await axios.get<VideoResponse>(`https://api.vimeo.com/me/projects/${projectId}/videos?sort=alphabetical`, {
-                    headers: {
-                      Authorization: `Bearer ${vimeoToken}`, 
-                    }
-                  });
-                
-                const videos = await response.data.data;
-                setVideos(videos);
-            } catch(error) {
-                console.error(error);
-            } finally {
-                setIsLoading(false)
-            }
-        };
-        fetchVideos();
-    }, [projectId])
-console.log(isLoading)
- 
     return (
         <div className={styles.container}>
-        {isLoading ? (
-          <div className={styles.loading}>
-         <ReactLoading type="bubbles" color="#146DA6" height={200} width={100}/>
-          </div>
-          ): (
-            <>
-                {videos.map((video: any) =>  {
+            {isVideoLoading ? (
+                <div className={styles.loading}>
+                    <ReactLoading type="bubbles" color="#146DA6" height={200} width={100}/>
+                </div>
+
+            ): (
+                <>
+                 {videos.map((video: any) =>  {
                     return (
                     <>
                     <div className={styles.card} key={video.resource_key} >
@@ -84,10 +49,36 @@ console.log(isLoading)
                     </>
                     );
                 })}    
-            </>
-              )}
+                </>
+            )}
+               
         </div>
     )
 }
 
 export default Videos;
+
+
+/* Use this if the other method fails */
+// useEffect(() => {
+
+//     const fetchVideos = async () => {
+//         try {
+//             setIsLoading(true)
+//             const response = await axios.get<VideoResponse>(`https://api.vimeo.com/me/projects/${projectId}/videos?sort=alphabetical`, {
+//                 headers: {
+//                   Authorization: `Bearer ${vimeoToken}`, 
+//                 }
+//               });
+            
+//             const videos = await response.data.data;
+//             console.log(videos)
+//             setVideos(videos);
+//         } catch(error) {
+//             console.error(error);
+//         } finally {
+//             setIsLoading(false)
+//         }
+//     };
+//     fetchVideos();
+// }, [projectId])
