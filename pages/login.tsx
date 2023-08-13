@@ -5,6 +5,7 @@ import Layout from '../components/Layout'
 import { useRouter } from "next/navigation";
 import Cookies from 'js-cookie';
 import Link from 'next/link';
+import jwt from 'jsonwebtoken';
 
 interface ResponseData {
     token: string;
@@ -24,6 +25,7 @@ export default function Login() {
     }
     
 
+
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>):Promise<void>  => {
         e.preventDefault();
         
@@ -35,7 +37,6 @@ export default function Login() {
            
             const response = await axios.post('api/login', registeredUser)
 
-             console.log(response)
              if (isResponseData(response.data)) {
                 const responseData = response.data;
                 const token = responseData.token;

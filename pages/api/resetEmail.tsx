@@ -34,15 +34,6 @@ const resetEmail = async (req:NextApiRequest, res:NextApiResponse) => {
         }
 
         const token = jwt.sign({ email }, secretKey, {expiresIn:'1hr'});
-        
-        // await ResetPassword.sync()
-        // const userEmail = new ResetPassword ({
-        //     email,
-        //     token: bcrypt.hashSync(token, 12),
-        // });
-
-        // console.log(userEmail)
-        // await userEmail.save();
 
         const resetUrl = `${process.env.NEXT_PUBLIC_APP_URL}/reset_password?token=${token}`;
         const mailOptions = {

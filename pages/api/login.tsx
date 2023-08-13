@@ -55,7 +55,9 @@ const login = async (req:NextApiRequest, res:NextApiResponse) => {
             return res.status(401).send({message: 'Invalid email or password'})
         }
 
-        const token = jwt.sign({ userId: user?.id }, secret, {expiresIn: '1h'});
+        const token = jwt.sign({ admin: user?.admin }, secret, {expiresIn: '1h'});
+        const decoded = jwt.verify(token, secret)
+        console.log(decoded)
         setTokenCookieMiddleware(res, token);
         return res.status(200).json({token, user, message: 'Logged in successfully'})
 

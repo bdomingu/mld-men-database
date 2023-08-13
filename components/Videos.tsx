@@ -43,7 +43,6 @@ import ReactLoading from 'react-loading';
                     </div>
                     <div className={styles.content}>
                         <h3>{video.name}</h3>
-                        <p>Lorem ipsum dolor sit amet consectetur. Dictum lectus.</p>
                     </div>
                     </div>
                     </>

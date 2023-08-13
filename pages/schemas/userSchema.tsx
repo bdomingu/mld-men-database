@@ -7,6 +7,7 @@ class User extends Model {
   public name!: string; 
   public email!: string;
   public password!: string; 
+  public admin!: boolean;
 
 }
 
@@ -30,6 +31,11 @@ User.init(
         type: DataTypes.STRING, // Set the data type for the 'password' field
         allowNull: false,
     },
+    admin: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: 0,
+    }
   },
   {
     sequelize,
