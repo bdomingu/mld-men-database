@@ -31,7 +31,8 @@ export default function Login() {
 
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>):Promise<void>  => {
         e.preventDefault();
-        setIsLoading(true)
+        setIsLoading(true);
+        let status;
         try {
             const registeredUser = {
                 email: userEmail.toLowerCase(),
@@ -39,6 +40,7 @@ export default function Login() {
             }
            
             const response = await axios.post('api/login', registeredUser)
+            status = response.status;
 
              if (isResponseData(response.data)) {
                 const responseData = response.data;
@@ -47,20 +49,17 @@ export default function Login() {
 
                 const expirationDate = new Date(Date.now() + 60 * 60 * 1000); 
                 Cookies.set('token', token, {expires: expirationDate, path: '/'});
-                Cookies.set('user', user, {expires: expirationDate, path: '/'});
-                const status = response.status
-                if (status === 200){
-                    router.push('/videos')
-                }
+                Cookies.set('user', user, {expires: expirationDate, path: '/'});               
             } else {
                 console.log('Token is missing in the response data')
             }
-        
-           
         } catch (error:any) {
             setError(error.response.data.message);
         } finally {
-           setIsLoading(false)
+           if (status === 200){
+            router.push('/videos')
+           
+        }
         }
 
     }
@@ -97,7 +96,6 @@ export default function Login() {
                      </form>
                      <div className={styles.flex}>
                      <Link href='/forgot_password'>Forgot Password?</Link>
-                     {/* <Link href='/signup'>Don&apos;t have an account? Sign Up</Link> */}
                      </div>
                 </div>
             </div>

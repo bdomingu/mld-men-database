@@ -35,7 +35,6 @@ const resetPassword = async (req:NextApiRequest, res:NextApiResponse) => {
         } catch(error) {
             if (error instanceof ValidationError) {
                 const errors = error.inner.map((err) => ({ field: err.path, message: err.message }));
-                console.log(errors)
                 return res.status(400).json({ errors });
             }
             return res.status(500).json({ message: "Internal server error" });
@@ -72,7 +71,6 @@ const resetPassword = async (req:NextApiRequest, res:NextApiResponse) => {
             const errors = error.inner.map((err) => ({ field: err.path, message: err.message }));
             return res.status(400).json({ errors });
         }
-        console.error(error);
         res.status(500).json({ message: 'Internal server error' });
     }
 }

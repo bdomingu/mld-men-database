@@ -4,6 +4,7 @@ import Layout from '../components/Layout'
 import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
+import axios from 'axios'
 
 export default function Home() {
   const router = useRouter();
@@ -15,6 +16,16 @@ export default function Home() {
     }
   }, [router]);
 
+  const handleLogout = async () => {
+    const response = await axios.get('api/logout')
+    const status = response.status;
+    if(status === 200) {
+        Cookies.remove('token', { path: '/' })
+        Cookies.remove('user', { path: '/' })
+        router.push('/')
+    }
+
+}
   return (
     <div>
     <Layout>

@@ -1,6 +1,5 @@
 import Cookies from 'js-cookie';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+
 import axios from 'axios';
 
 const fetchAdminStatus = async () => {

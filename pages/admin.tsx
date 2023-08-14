@@ -1,15 +1,10 @@
-import AdminAuth from "@/components/AdminAuth";
 import styles from './admin.module.css'
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import Layout from "@/components/Layout";
-import Loading from '@/components/Loading';
-
-
-/* figure out how to get the loading to not go on forever */
-/* figure out how to load after log out */
-/* figure out faster video fetching */
+import fetchAdminStatus from "@/components/AdminStatus";
+import Invalid from '@/components/Invalid';
 
 
 interface ResponseData {
@@ -20,10 +15,17 @@ interface ResponseData {
 const Admin = () => {
     const [expirationTime, setExpirationTime] = useState(1);
     const [registrationLink, setRegistrationLink] = useState('');
-    const [isLoading, setIsLoading] = useState(true);
-
-    const admin = Cookies.get('user')
+    const [isAdminUser, setIsAdminUser] = useState(false);
+    const admin = Cookies.get('user');
     
+    
+    useEffect(() => {
+        const checkAdminStatus = async () => {
+               const isAdmin = await fetchAdminStatus();
+               setIsAdminUser(isAdmin);
+           } 
+           checkAdminStatus()
+    }, [])
 
     function isResponseData(obj: any): obj is ResponseData {
         return 'token' in obj;
@@ -50,7 +52,7 @@ const Admin = () => {
         } catch(error) {
             console.log(error)
         } finally {
-            setIsLoading(false)
+            
         }
     }
 
@@ -64,32 +66,32 @@ const Admin = () => {
 
     return (
         <Layout footerColor="black">
-            {isLoading ? (
-                 <Loading />
-        ) : (
-            <>
-        <div className={styles.container}>
-            <h4>Enter a number of day(s) you would like to set for the registration link. Please copy and paste the link somewhere safe as it will disappear on refresh.</h4>
-            <div className={styles.inputContainer}>
-            <label>
-                Expiration Time (days):
-                <input
-                type="number"
-                min="1"
-                value={expirationTime}
-                onChange={handleExpirationChange}
-                />
-            </label>
-            <button onClick={generateLink}>Generate</button>
-            </div>
-            <div className={styles.registrationLink}>
-            <p >{registrationLink}</p>
-            </div>
-        </div>
-        </>
-        )}
+            {isAdminUser ? (
+              <div className={styles.container}>
+              <h4>Enter a number of day(s) you would like to set for the registration link. Please copy and paste the link somewhere safe as it will disappear on refresh.</h4>
+              <div className={styles.inputContainer}>
+              <label>
+                  Expiration Time (days):
+                  <input
+                  type="number"
+                  min="1"
+                  value={expirationTime}
+                  onChange={handleExpirationChange}
+                  />
+              </label>
+              <button onClick={generateLink}>Generate</button>
+              </div>
+              <div className={styles.registrationLink}>
+                <div className={styles.link}>
+                <p >{registrationLink}</p>
+                </div>
+              </div>
+          </div>
+            ) : (
+            <Invalid/>
+            )}
         </Layout>
     );
 }
 
-export default AdminAuth(Admin);
+export default Admin;

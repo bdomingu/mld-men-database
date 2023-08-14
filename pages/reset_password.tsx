@@ -26,8 +26,6 @@ const ResetPasswordPage = () => {
                 router.push('/login')
              }
         } catch (error: any) {
-            console.log(error.response.data.message)
-            console.log(error.response.data.errors)
             setLinkError(error.response.data.message)
             setErrors(error.response.data.errors);
 
@@ -73,8 +71,8 @@ const ResetPasswordPage = () => {
                     type="submit"
                     >Change Password</button>
                     </div>
-                    <p>Make sure it's at least 8 characters including an uppercase letter, a lowercase
-                        letter, one number, and one special character.</p>
+                    <p>Password must contain at least 8 characters including an uppercase letter, a lowercase
+                        letter, one number, and one special character [@$!%*?&].</p>
                 </form>
         </div>
         </>

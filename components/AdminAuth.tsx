@@ -1,11 +1,12 @@
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import fetchAdminStatus from './AdminStatus';
 
 
 const AdminAuth = <P extends object>(WrappedComponent: React.ComponentType<P>): React.FC<P> => {
     const Wrapper: React.FC<P> = (props) => {
+      const [isLoading, setIsLoading] = useState(true);
       const router = useRouter();
 
     useEffect(() => {
@@ -22,10 +23,12 @@ const AdminAuth = <P extends object>(WrappedComponent: React.ComponentType<P>): 
        }
     }  
 
-      checkAdminStatus()
+      checkAdminStatus().finally(() => {
+        setIsLoading(false)
+      })
     }, [router]);
 
-    return <WrappedComponent {...props} />;
+    return <WrappedComponent isLoading={isLoading} {...props} />;
   };
 
   return Wrapper;

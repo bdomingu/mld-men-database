@@ -1,5 +1,6 @@
 .container{
-    height: 320px;
+ 
+    height: 325px;
 }
 
 .container h4 {
@@ -9,8 +10,8 @@
     font-size: 1.5em;
     text-align: center;
     color: #EAEAEA;
-    margin-left: 80px;
-    margin-right: 80px;
+    margin-left: 60px;
+    margin-right: 60px;
 }
 
 .inputContainer{
@@ -18,7 +19,7 @@
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    
+    text-align: center;
 }
 
 .inputContainer label {
@@ -31,7 +32,9 @@
     padding-bottom: 20px;
 }
 
-
+.inputContainer label input {
+    height: 30px;
+}
 .inputContainer button {
     background: #121212;
     border: 1px solid #740000;
@@ -47,3 +50,39 @@
     cursor: pointer;
 }
 
+
+.link {
+    overflow-wrap: break-word;
+    word-break: break-all;
+    max-width: 100%;
+    margin-right:80px;
+    margin-left:80px;
+    padding-top: 20px;
+  }
+
+.link p{
+    color: #EAEAEA;
+}
+
+
+@media only screen and (max-width: 650px) {
+    .link {
+        margin-right:30px;
+        margin-left:30px;
+        padding-top: 20px;
+      }
+    .container{
+        height: 420px;
+    }
+
+    .container h4 {
+        font-size: 1.2em;
+    }
+  }
+  
+
+  @media only screen and (max-width: 415px) {
+    .container{
+        height: 500px;
+    }
+  }

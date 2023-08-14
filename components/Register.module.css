@@ -126,6 +126,17 @@
     color: #EAEAEA;
 }
 
+.passwordReference {
+    text-align: center;
+    color: #EAEAEA;
+    font-family: 'Zilla Slab', serif;
+    font-style: normal;
+    font-size: 1.2em;
+    font-weight: 400;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
 @media only screen and (max-width:445px) {
     .button{
         padding-top: 40px;

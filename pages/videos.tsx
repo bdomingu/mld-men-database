@@ -4,9 +4,10 @@ import Layout from '../components/Layout';
 import styles from './videos.module.css';
 import Cookies from 'js-cookie';
 import Videos from '../components/Videos';
-import withAuth from "@/components/ProtectedRoute";
 import Loading from '@/components/Loading';
 import ReactLoading from 'react-loading';
+import { useRouter } from 'next/router';
+import withAuth from '@/components/ProtectedRoute';
 
 interface Course {
    folder: {
@@ -76,7 +77,7 @@ interface Video {
     const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
     const [selectedYear, setSelectedYear] = useState<Year | null>(null)
     const [isListItemDisabled, setIsListItemDisabled] = useState(false);
-
+    const router = useRouter();
 
 
     const baseURL = 'projects/17319211/items'
@@ -85,12 +86,13 @@ interface Video {
     useEffect(() => {
         if(Cookies.get("token")){
             setIsLoading(false);
-        }     
+        }
     }, []);
 
     useEffect(() => {
 
         const fetchCourses = async () => {
+            setIsLoading(true);
             try {
                 const response = await axios.get<CourseResponse>(`https://api.vimeo.com/me/${baseURL}`, {
                     headers: {
@@ -136,11 +138,12 @@ interface Video {
     }
 
     const fetchVideos = async (videosUrl: string, selectedYear: Year) => {
+      
         try {
             setIsVideoLoading(true)
             setIsListItemDisabled(true);
             setSelectedYear(selectedYear)
-            const response = await axios.get<VideoResponse>(`https://api.vimeo.com/${videosUrl}`, {
+            const response = await axios.get<VideoResponse>(`api/fetchVideos/?url=${videosUrl}`, {
                 headers: {
                     Authorization: `Bearer ${vimeoToken}`, 
                 }
@@ -160,48 +163,48 @@ interface Video {
   
     return (
         <Layout>
-            {isLoading ? (
-                <Loading/>
-            ): (
-                <><div className={styles.textContainer}>
-                        <h1>Courses</h1>
-                        <p>Choose a course below to get started.</p>
-                    </div><div className={styles.videoContainer}>
-                            <div className={styles.courses}>
-                                {courses.map((course) => {
-                                    return (
-                                        <li 
-                                        onClick={() => handlecCourseClick(course.folder.metadata.connections.items.uri, course)}
-                                        className={isListItemDisabled ? styles.disabled : selectedCourse === course ? styles.selectedFolder : undefined}
-                                        >
-                                        {course.folder.name}
-                                        </li>
-                                    );
-                                })}
-                            </div>
+            {Cookies.get('token') && !isLoading ?(
+                  <><div className={styles.textContainer}>
+                  <h1>Courses</h1>
+                  <p>Choose a course below to get started.</p>
+              </div><div className={styles.videoContainer}>
+                      <div className={styles.courses}>
+                          {courses.map((course) => {
+                              return (
+                                  <li 
+                                  onClick={() => handlecCourseClick(course.folder.metadata.connections.items.uri, course)}
+                                  className={isListItemDisabled ? styles.disabled : selectedCourse === course ? styles.selectedFolder : undefined}
+                                  >
+                                  {course.folder.name}
+                                  </li>
+                              );
+                          })}
+                      </div>
 
-                            <div className={styles.line}></div>
-                            <div className={styles.years}>
-                                {isFetchLoading ? (
-                                    <ReactLoading type="bubbles" color="#146DA6" height={200} width={100}/>
-                                ): (
-                                    <>
-                                    {years.map((year, index) => {
-                                        return (
-                                            <li 
-                                            onClick={() => fetchVideos(year.folder.metadata.connections.videos.uri, year)}
-                                            className={isListItemDisabled ? styles.disabled : selectedYear === year ? styles.selectedFolder : undefined}
-                                            key={index}
-                                            >{year.folder.name}
-                                            </li>
-                                        );
-                                    })}
-                                    </>
-                                )}
-                                
-                            </div>
-                            <Videos videos={videos} isVideoLoading={isVideoLoading}/>
-                        </div></>
+                      <div className={styles.line}></div>
+                      <div className={styles.years}>
+                          {isFetchLoading ? (
+                              <ReactLoading type="bubbles" color="#146DA6" height={200} width={100}/>
+                          ): (
+                              <>
+                              {years.map((year, index) => {
+                                  return (
+                                      <li 
+                                      onClick={() => fetchVideos(year.folder.metadata.connections.videos.uri, year)}
+                                      className={isListItemDisabled ? styles.disabled : selectedYear === year ? styles.selectedFolder : undefined}
+                                      key={index}
+                                      >{year.folder.name}
+                                      </li>
+                                  );
+                              })}
+                              </>
+                          )}
+                      </div>
+                      <Videos videos={videos} isVideoLoading={isVideoLoading}/>
+                  </div></>
+            ): (
+            <Loading/>
+              
             )}
      </Layout>
        

@@ -57,12 +57,10 @@ const login = async (req:NextApiRequest, res:NextApiResponse) => {
 
         const token = jwt.sign({ admin: user?.admin }, secret, {expiresIn: '1h'});
         const decoded = jwt.verify(token, secret)
-        console.log(decoded)
         setTokenCookieMiddleware(res, token);
         return res.status(200).json({token, user, message: 'Logged in successfully'})
 
     } catch (error) {
-        console.error('Error creating user:', error);
         return res.status(500).json({ error: 'Internal server error' });
     }
    

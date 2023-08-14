@@ -1,8 +1,6 @@
 import styles from './Videos.module.css';
-import { useState, useEffect } from 'react';
-import axios from "axios";
-import { useRouter } from 'next/navigation';
 import ReactLoading from 'react-loading';
+
 
 
 
@@ -12,11 +10,6 @@ import ReactLoading from 'react-loading';
     };
 
   const Videos: React.FC<VideosProps> = ({ videos, isVideoLoading}) => {
-    // const [isLoading, setIsLoading] = useState(true);
-
-
-
-    const router = useRouter();
 
     return (
         <div className={styles.container}>
@@ -58,26 +51,3 @@ import ReactLoading from 'react-loading';
 export default Videos;
 
 
-/* Use this if the other method fails */
-// useEffect(() => {
-
-//     const fetchVideos = async () => {
-//         try {
-//             setIsLoading(true)
-//             const response = await axios.get<VideoResponse>(`https://api.vimeo.com/me/projects/${projectId}/videos?sort=alphabetical`, {
-//                 headers: {
-//                   Authorization: `Bearer ${vimeoToken}`, 
-//                 }
-//               });
-            
-//             const videos = await response.data.data;
-//             console.log(videos)
-//             setVideos(videos);
-//         } catch(error) {
-//             console.error(error);
-//         } finally {
-//             setIsLoading(false)
-//         }
-//     };
-//     fetchVideos();
-// }, [projectId])

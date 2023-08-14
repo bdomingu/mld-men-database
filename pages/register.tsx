@@ -9,8 +9,8 @@ import Invalid from "@/components/Invalid";
 export default function Signup() {
     const router = useRouter();
     const { token } = router.query
-    const [tokenStatus, setTokenStatus] = useState(false)
-
+    const [tokenStatus, setTokenStatus] = useState(false);
+    
     useEffect(() => {
         const verifyRegisterToken = async () => {
             try {
@@ -19,6 +19,7 @@ export default function Signup() {
                 const status = response.status
                 if (status === 200){
                     setTokenStatus(true)
+                  
                 }
             } catch(error: any) {
                 console.log(error.response.status)
