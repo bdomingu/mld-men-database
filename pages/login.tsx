@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Cookies from 'js-cookie';
 import Link from 'next/link';
 import jwt from 'jsonwebtoken';
+import Loading from '@/components/Loading';
 
 interface ResponseData {
     token: string;
@@ -18,6 +19,8 @@ export default function Login() {
     const [userEmail, setUserEmail] = useState('');
     const [userPassword, setUserPassword] = useState('');
     const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+
     const router = useRouter();
 
     function isResponseData(obj: any): obj is ResponseData {
@@ -28,7 +31,7 @@ export default function Login() {
 
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>):Promise<void>  => {
         e.preventDefault();
-        
+        setIsLoading(true)
         try {
             const registeredUser = {
                 email: userEmail.toLowerCase(),
@@ -56,6 +59,8 @@ export default function Login() {
            
         } catch (error:any) {
             setError(error.response.data.message);
+        } finally {
+           setIsLoading(false)
         }
 
     }
@@ -63,7 +68,9 @@ export default function Login() {
 
     return (
         <Layout footerColor="black">
-
+              {isLoading ? (
+                <Loading/>
+            ): (
             <div className={styles.container}>
             <div className={styles.login}>
                 <div className={styles.text}>
@@ -95,6 +102,8 @@ export default function Login() {
                 </div>
             </div>
             </div>
+
+            )}
         </Layout>
     )
 }

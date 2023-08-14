@@ -75,6 +75,8 @@ interface Video {
     const [isVideoLoading, setIsVideoLoading] = useState(false);
     const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
     const [selectedYear, setSelectedYear] = useState<Year | null>(null)
+    const [isListItemDisabled, setIsListItemDisabled] = useState(false);
+
 
 
     const baseURL = 'projects/17319211/items'
@@ -114,8 +116,9 @@ interface Video {
 
     const fetchYears = async (url: string, selectedCourse: Course) => {
         try {
-            setIsFetchLoading(true)
-            setSelectedCourse(selectedCourse)
+            setIsFetchLoading(true);
+            setSelectedCourse(selectedCourse);
+            setIsListItemDisabled(true);
             const response = await axios.get<YearResponse>(`https://api.vimeo.com/${url}`, {
                 headers: {
                     Authorization: `Bearer ${vimeoToken}`, 
@@ -128,12 +131,14 @@ interface Video {
             console.error(error);
         } finally {
             setIsFetchLoading(false)
+            setIsListItemDisabled(false);
         }
     }
 
     const fetchVideos = async (videosUrl: string, selectedYear: Year) => {
         try {
             setIsVideoLoading(true)
+            setIsListItemDisabled(true);
             setSelectedYear(selectedYear)
             const response = await axios.get<VideoResponse>(`https://api.vimeo.com/${videosUrl}`, {
                 headers: {
@@ -146,7 +151,9 @@ interface Video {
         } catch(error) {
             console.error(error)
         } finally {
-            setIsVideoLoading(false)
+            setIsVideoLoading(false);
+            setIsListItemDisabled(false);
+
         }
 
     }
@@ -165,7 +172,7 @@ interface Video {
                                     return (
                                         <li 
                                         onClick={() => handlecCourseClick(course.folder.metadata.connections.items.uri, course)}
-                                        className={selectedCourse === course ? styles.selectedFolder : undefined}
+                                        className={isListItemDisabled ? styles.disabled : selectedCourse === course ? styles.selectedFolder : undefined}
                                         >
                                         {course.folder.name}
                                         </li>
@@ -183,7 +190,7 @@ interface Video {
                                         return (
                                             <li 
                                             onClick={() => fetchVideos(year.folder.metadata.connections.videos.uri, year)}
-                                            className={selectedYear === year ? styles.selectedFolder : undefined}
+                                            className={isListItemDisabled ? styles.disabled : selectedYear === year ? styles.selectedFolder : undefined}
                                             key={index}
                                             >{year.folder.name}
                                             </li>

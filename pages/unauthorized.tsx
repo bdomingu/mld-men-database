@@ -1,11 +1,13 @@
 import React from 'react';
+import Invalid from '@/components/Invalid';
+import Layout from '@/components/Layout';
 
 function Unauthorized() {
   return (
-    <div>
-      <h1>Unauthorized Access</h1>
-      <p>You do not have permission to access this page.</p>
-    </div>
+    <Layout>
+      <Invalid/>
+    </Layout>
+   
   );
 }
 

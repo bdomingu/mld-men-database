@@ -14,7 +14,7 @@ const verifyAdmin = async (req:NextApiRequest, res:NextApiResponse) => {
   try {
     const decoded = jwt.verify(token, secret) as jwt.JwtPayload
     const isAdmin = decoded.admin
-    console.log(isAdmin)
+
     if (isAdmin === false) {
       return res.status(401).json({ message: "Unauthorized" });
     } else {

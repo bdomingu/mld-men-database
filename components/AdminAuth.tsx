@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useEffect } from 'react';
+import fetchAdminStatus from './AdminStatus';
 
 
 const AdminAuth = <P extends object>(WrappedComponent: React.ComponentType<P>): React.FC<P> => {
@@ -14,21 +14,15 @@ const AdminAuth = <P extends object>(WrappedComponent: React.ComponentType<P>): 
         router.push('/login');
       }
       
-    const fetchAdminStatus = async () => {
-        await axios.get(`/api/verifyAdmin?token=${token}`).catch( err =>{
-            console.log(err.response)
-            const isAdminStatus = err.response.status
-            console.log(isAdminStatus)
-            if (isAdminStatus === 401){
-                router.push('/unauthorized')
-            }
-
-        }
-
-        )
+    const checkAdminStatus = async () => {
+       const isAdmin = await fetchAdminStatus();
+       if (isAdmin === false ) {
+        router.push('/unauthorized');
+       
+       }
     }  
 
-      fetchAdminStatus()
+      checkAdminStatus()
     }, [router]);
 
     return <WrappedComponent {...props} />;

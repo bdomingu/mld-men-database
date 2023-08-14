@@ -9,22 +9,33 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
+import isAdmin from "@/components/AdminAuth";
+import fetchAdminStatus from './AdminStatus';
+
 
 
 config.autoAddCss = false;
 
 
-export default function Nav() {
+const Nav = () => {
+
     const [showMenu, setShowMenu] = useState(false);
     const [loggedIn, setLoggedIn] = useState(false);
+    const [isAdminUser, setIsAdminUser] = useState(false);
+
     const router = useRouter();
 
 
     useEffect(() => {
-        if(Cookies.get("token")){
-        setLoggedIn(true);
-        } 
-      }, [])
+        const checkAdminStatus = async () => {
+           if(Cookies.get("token")){
+               setLoggedIn(true);
+               const isAdmin = await fetchAdminStatus();
+               setIsAdminUser(isAdmin);
+           } 
+        }
+           checkAdminStatus()
+       }, [])
 
     const handleClick = () => {
         setShowMenu(!showMenu);
@@ -62,6 +73,8 @@ export default function Nav() {
                     <>
                 <div className={showMenu ? styles.menuListActive : styles.menuList}>
                 <div className={styles.menu}>
+                {isAdminUser && <Link href='/admin' className={styles.myCourses}><span>Admin</span></Link>} {/* Render the extra option if the user is an admin */}
+
                     <button onClick={handleLogout}>Logout</button>
                 </div>
                 </div>
@@ -71,7 +84,6 @@ export default function Nav() {
                     <div className={showMenu ? styles.menuListActive : styles.menuList}>
                     <div className={styles.menu}>
                         <Link href='/login' className={styles.myCourses}><span>Login</span></Link>
-                        {/* <Link href='/signup'><li>Signup</li></Link> */}
                     </div>
                     </div>
                     </>
@@ -83,3 +95,5 @@ export default function Nav() {
         </nav>
     )
 }
+
+export default Nav;

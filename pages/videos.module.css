@@ -51,6 +51,12 @@
     cursor: pointer;
 }
 
+.disabled {
+    pointer-events: none;
+    opacity: 0.6;
+  }
+  
+
 .line {
     border-top: 2px solid #146DA6;
     width: 72%;
