@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import bcrypt from 'bcrypt';
-import User from '../schemas/userSchema';
+import User from './schemas/userSchema';
 import * as Yup from 'yup';
 import sequelize from "./db";
 import { ValidationError } from "yup";

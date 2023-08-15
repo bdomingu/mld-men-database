@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import User from '../schemas/userSchema';
+import User from './schemas/userSchema';
 import * as Yup from 'yup';
 import { ValidationError } from "yup";
 

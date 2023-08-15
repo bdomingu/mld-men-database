@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import bcrypt from 'bcrypt';
 import { serialize } from 'cookie';
 import jwt from 'jsonwebtoken';
-import User from '../schemas/userSchema';
+import User from './schemas/userSchema';
 import sequelize from "./db";
 
 (async () => {
