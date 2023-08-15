@@ -94,7 +94,7 @@ interface Video {
             try {
                 const response = await axios.get<CourseResponse>(`https://api.vimeo.com/me/${baseURL}`, {
                     headers: {
-                      Authorization: `Bearer ${vimeoToken}`, 
+                      Authorization: `Bearer ${process.env.NEXT_PUBLIC_VIMEO_ACCESS_TOKEN}`, 
                     }
                   });
                 
