@@ -12,7 +12,7 @@ import Cookies from 'js-cookie';
 import isAdmin from "@/components/AdminAuth";
 import fetchAdminStatus from './AdminStatus';
 import Image from 'next/image';
-
+import { type } from 'os';
 
 
 config.autoAddCss = false;
@@ -23,6 +23,8 @@ const Nav = () => {
     const [showMenu, setShowMenu] = useState(false);
     const [loggedIn, setLoggedIn] = useState(false);
     const [isAdminUser, setIsAdminUser] = useState(false);
+    const [loading, setLoading] = useState(false);
+
     const router = useRouter();
 
 
@@ -42,6 +44,7 @@ const Nav = () => {
     }
 
     const handleLogout = async () => {
+        setLoading(true)
         const response = await axios.get('api/logout')
         const status = response.status;
         if(status === 200) {
@@ -49,8 +52,10 @@ const Nav = () => {
             Cookies.remove('user', { path: '/' })
             router.push('/')
         }
-
+        setLoading(false)
     }
+
+  
 
     return (
         <nav className={styles.navContainer}>
@@ -81,7 +86,7 @@ const Nav = () => {
                 <div className={styles.menu}>
                 {isAdminUser && <Link href='/admin' className={styles.myCourses}><span>Admin</span></Link>} {/* Render the extra option if the user is an admin */}
 
-                    <button onClick={handleLogout}>Logout</button>
+                    <button onClick={handleLogout} disabled={loading}>Logout</button>
                 </div>
                 </div>
                 </> 

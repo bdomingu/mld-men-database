@@ -6,7 +6,6 @@ import Cookies from 'js-cookie';
 import Videos from '../components/Videos';
 import Loading from '@/components/Loading';
 import ReactLoading from 'react-loading';
-import { useRouter } from 'next/router';
 import withAuth from '@/components/ProtectedRoute';
 
 interface Course {
@@ -77,7 +76,6 @@ interface Video {
     const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
     const [selectedYear, setSelectedYear] = useState<Year | null>(null)
     const [isListItemDisabled, setIsListItemDisabled] = useState(false);
-    const router = useRouter();
 
 
     const baseURL = 'projects/17319211/items'
@@ -110,7 +108,7 @@ interface Video {
             }
         };
         fetchCourses();
-    }, [])
+    }, [vimeoToken])
 
     const handlecCourseClick = (uri: string, selectedCourse: Course) => {
         fetchYears(uri, selectedCourse);

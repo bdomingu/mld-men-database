@@ -1,4 +1,4 @@
-import styles from './admin.module.css'
+import styles from './admin.module.css';
 import { useState, useEffect} from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';

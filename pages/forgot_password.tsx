@@ -4,6 +4,7 @@ import axios from 'axios';
 import styles from './forgot_password.module.css';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const ResetPassword = () => {
     const [emailAddress, setEmailAddress] = useState('');
@@ -38,12 +39,15 @@ const ResetPassword = () => {
         <>
         <div className={styles.container}>
         <div className={styles.logoContainer}>
+            <Link href='/'>
             <Image className={styles.logo} 
             src='/images/image8.png'
             alt='logo'
             width={100}
             height={200}
             />
+            </Link>
+          
         </div>
         <div className={styles.textContainer}>
             <h1>Reset Password</h1>
@@ -63,7 +67,7 @@ const ResetPassword = () => {
                     </>) : (
                     <>
                     <div className={styles.formContainer}>
-                        <p>Enter your user account's email address and we will send you a password
+                        <p>Enter your user account&apos;s email address and we will send you a password
                             reset link.</p>
                        
                         <form onSubmit={(e) => void handleResetRequest(e)}>

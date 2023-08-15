@@ -1,9 +1,10 @@
-import styles from "./index.module.css"
+import styles from "./index.module.css";
 import Link from "next/link";
 import Layout from '../components/Layout'
 import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
 import Image from "next/image";
 
 export default function Home() {
@@ -17,9 +18,11 @@ export default function Home() {
   }, [router]);
 
 
+
+
   return (
     <div>
-    <Layout>
+    <Layout >
         <div className={styles.container}>
           <div className={styles.heroImage}>
             <Image 
@@ -33,15 +36,15 @@ export default function Home() {
             <div className={styles.content}>
               <h1>MLD Videos & Courses</h1>
               <p>
-                The time to transform your dating life is NOW. If you're serious
+                The time to transform your dating life is NOW. If you&apos;re serious
                 about becoming the man every woman desires, then you need to arm
                 yourself with the best tools right away. Unlock the secrets of
                 seduction, master the art of attraction, and become utterly
                 irresistible. My specially curated courses offer everything you
                 need to create abundance in your dating life. In this digital
-                age, it's crucial to know how to present yourself attractively
+                age, it&apos;s crucial to know how to present yourself attractively
                 online, decode and reciprocate non-verbal cues accurately, and
-                delve into the deep psychology of the women you're interested
+                delve into the deep psychology of the women you&apos;re interested
                 in. 
               </p>
               <div className={styles.button}>

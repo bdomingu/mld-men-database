@@ -1,8 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import nodemailer from 'nodemailer';
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
-import ResetPassword from "../schemas/resetPasswordSchema";
 import sequelize from "./db";
 
 (async () => {

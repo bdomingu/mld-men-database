@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
-import styles from './reset_password.module.css'
+import styles from './reset_password.module.css';
+import Image from "next/image";
+import Link from "next/link";
 
 const ResetPasswordPage = () => {
     const [newPassword, setNewPassword] = useState('');
@@ -36,7 +38,15 @@ const ResetPasswordPage = () => {
     return (
         <><div className={styles.container}>
             <div className={styles.logoContainer}>
-                <img className={styles.logo} src='/images/image8.png' />
+                <Link  href='/'>
+                <Image className={styles.logo} 
+                src='/images/image8.png'
+                alt="logo"
+                width={100}
+                height={200}
+                 />
+                </Link>
+               
             </div>
             <div className={styles.textContainer}>
                 <h1>Reset Password</h1>

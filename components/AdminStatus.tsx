@@ -1,5 +1,4 @@
 import Cookies from 'js-cookie';
-
 import axios from 'axios';
 
 const fetchAdminStatus = async () => {
