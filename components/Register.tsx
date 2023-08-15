@@ -79,9 +79,13 @@ export default function Signup() {
                                 value={confirmPassword}
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 />
-                                {errors.map((error: any) => {
+                                {errors.map((error: any, index) => {
                                     return(
-                                    <p className={styles.errors}>{error.message}</p>
+                                    <div key={index}>
+                                    <p className={styles.errors}
+                                    >{error.message}</p>
+                                    </div>
+                                   
                                     )
                                 })}
                         {/* <div className={styles.checkboxContainer}>

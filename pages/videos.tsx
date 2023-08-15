@@ -101,6 +101,7 @@ interface Video {
                   });
                 
                 const folders = await response.data.data;
+                console.log(folders)
                 setCourses(folders.reverse());
             } catch(error) {
                 console.error(error);
@@ -169,9 +170,10 @@ interface Video {
                   <p>Choose a course below to get started.</p>
               </div><div className={styles.videoContainer}>
                       <div className={styles.courses}>
-                          {courses.map((course) => {
+                          {courses.map((course, index) => {
                               return (
                                   <li 
+                                  key={index}
                                   onClick={() => handlecCourseClick(course.folder.metadata.connections.items.uri, course)}
                                   className={isListItemDisabled ? styles.disabled : selectedCourse === course ? styles.selectedFolder : undefined}
                                   >

@@ -8,6 +8,7 @@ import { faInstagramSquare} from '@fortawesome/free-brands-svg-icons';
 import { faTiktok } from '@fortawesome/free-brands-svg-icons';
 import { faYoutubeSquare} from '@fortawesome/free-brands-svg-icons';
 import Link from 'next/link';
+import Image from 'next/image';
 
 
 
@@ -22,7 +23,12 @@ export default function Footer({ footerColor }: {footerColor?: string}) {
         <div className={styles.footerContent}>
             <div className={styles.logo}>
             <Link href='/'>
-            <img src='/images/image8.png' />
+            <Image 
+            src='/images/image8.png' 
+            alt='logo'
+            width={124}
+            height={80}
+            />
             </Link>
             
             </div>

@@ -58,9 +58,12 @@ const ResetPasswordPage = () => {
                     
                     {errors && errors.length > 0 && (
                         <div>
-                            {errors.map((error: any) => {
+                            {errors.map((error: any, index) => {
                                 return(
-                                 <p className={styles.errors}>{error.message}</p>
+                                <div key={index}>
+                                <p className={styles.errors}>{error.message}</p>
+                                </div>
+                                 
                                 )
                             })}
                         </div>

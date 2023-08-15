@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import isAdmin from "@/components/AdminAuth";
 import fetchAdminStatus from './AdminStatus';
+import Image from 'next/image';
 
 
 
@@ -55,7 +56,13 @@ const Nav = () => {
         <nav className={styles.navContainer}>
             <div className={styles.navContent}>
                 <div className={styles.logo}>
-                <Link href='/'><img src='/images/image8.png' /></Link>
+                <Link href='/'>
+                <Image 
+                src='/images/image8.png'
+                alt='logo'
+                width={150}
+                height={200} 
+                /></Link>
                 </div>
                 <div className={styles.text}>
                 <h2>Modern Life Dating</h2>

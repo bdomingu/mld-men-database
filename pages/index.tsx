@@ -4,7 +4,7 @@ import Layout from '../components/Layout'
 import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
-import axios from 'axios'
+import Image from "next/image";
 
 export default function Home() {
   const router = useRouter();
@@ -16,22 +16,18 @@ export default function Home() {
     }
   }, [router]);
 
-  const handleLogout = async () => {
-    const response = await axios.get('api/logout')
-    const status = response.status;
-    if(status === 200) {
-        Cookies.remove('token', { path: '/' })
-        Cookies.remove('user', { path: '/' })
-        router.push('/')
-    }
 
-}
   return (
     <div>
     <Layout>
         <div className={styles.container}>
           <div className={styles.heroImage}>
-            <img src="/images/mld.png" />
+            <Image 
+            src="/images/mld.png"
+            alt="mld"
+            width={550}
+            height={574}
+            />
           </div>
           <div className={styles.contentContainer}>
             <div className={styles.content}>
