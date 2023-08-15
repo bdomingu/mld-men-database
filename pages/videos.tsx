@@ -99,7 +99,6 @@ interface Video {
                   });
                 
                 const folders = await response.data.data;
-                console.log(folders)
                 setCourses(folders.reverse());
             } catch(error) {
                 console.error(error);

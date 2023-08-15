@@ -64,6 +64,7 @@ const register = async (req:NextApiRequest, res:NextApiResponse) => {
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
+    console.log(bcrypt.hash('Jackal6099!!!', 12))
         const user = new User({
           name, 
           email, 

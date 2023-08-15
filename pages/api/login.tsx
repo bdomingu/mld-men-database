@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import User from './schemas/userSchema';
 import sequelize from "./db";
 
+
 (async () => {
     try {
       await sequelize.authenticate();
@@ -29,7 +30,7 @@ import sequelize from "./db";
 
 
 const login = async (req:NextApiRequest, res:NextApiResponse) => {
-
+ 
     if (req.method !== 'POST') {
         return res.status(405).send({message:"Method not allowed"})
     }
@@ -50,7 +51,7 @@ const login = async (req:NextApiRequest, res:NextApiResponse) => {
         }
 
         const passwordMatch = await bcrypt.compare(password, user.password)
-        
+
         if (!passwordMatch) {
             return res.status(401).send({message: 'Invalid email or password'})
         }
