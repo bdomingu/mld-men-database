@@ -92,7 +92,7 @@ interface Video {
         const fetchCourses = async () => {
             setIsLoading(true);
             try {
-                const response = await axios.get<CourseResponse>(`https://api.vimeo.com/me/${baseURL}`, {
+                const response = await axios.get<CourseResponse>('api/fetchCourses', {
                     headers: {
                       Authorization: `Bearer ${process.env.NEXT_PUBLIC_VIMEO_ACCESS_TOKEN}`, 
                     }
@@ -114,12 +114,12 @@ interface Video {
         setVideos([]);
     }
 
-    const fetchYears = async (url: string, selectedCourse: Course) => {
+    const fetchYears = async (yearsUrl: string, selectedCourse: Course) => {
         try {
             setIsFetchLoading(true);
             setSelectedCourse(selectedCourse);
             setIsListItemDisabled(true);
-            const response = await axios.get<YearResponse>(`https://api.vimeo.com/${url}`, {
+            const response = await axios.get<YearResponse>(`api/fetchYears/?url=${yearsUrl}`, {
                 headers: {
                     Authorization: `Bearer ${vimeoToken}`, 
                   }
