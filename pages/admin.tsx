@@ -7,11 +7,6 @@ import fetchAdminStatus from "@/components/AdminStatus";
 import Invalid from '@/components/Invalid';
 
 
-interface ResponseData {
-    link: string;
-   
-}
-
 const Admin = () => {
     const [expirationTime, setExpirationTime] = useState(1);
     const [registrationLink, setRegistrationLink] = useState('');
@@ -41,7 +36,6 @@ const Admin = () => {
     
             const responseData = response.data;
             const registerLink = responseData.link;
-            console.log(registerLink)
             setRegistrationLink(registerLink)
       
 
