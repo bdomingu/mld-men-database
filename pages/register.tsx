@@ -32,7 +32,6 @@ export default function Signup() {
     return (
         <Layout footerColor="black">
            
-       
         {tokenStatus ? (
             <Register/>
         ) : (

@@ -8,7 +8,7 @@ import Invalid from '@/components/Invalid';
 
 
 interface ResponseData {
-    token: string;
+    link: string;
    
 }
 
@@ -27,9 +27,7 @@ const Admin = () => {
            checkAdminStatus()
     }, [])
 
-    function isResponseData(obj: any): obj is ResponseData {
-        return 'token' in obj;
-    }
+   
 
     const generateLink = async () => {
 
@@ -40,14 +38,12 @@ const Admin = () => {
         try{
         const response = await axios.post('/api/generateLinkToken', data)
 
-        if (isResponseData(response.data)) {
+    
             const responseData = response.data;
-            const token = responseData.token;
-            const link = `${process.env.NEXT_PUBLIC_APP_URL}/register?token=${token}`
-            setRegistrationLink(link)
-        } else {
-            console.log('Token is missing in the response data')
-        }
+            const registerLink = responseData.link;
+            console.log(registerLink)
+            setRegistrationLink(registerLink)
+      
 
         } catch(error) {
             console.log(error)
