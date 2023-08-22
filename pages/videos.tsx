@@ -78,8 +78,7 @@ interface Video {
     const [isListItemDisabled, setIsListItemDisabled] = useState(false);
 
 
-    const baseURL = 'projects/17319211/items'
-    const vimeoToken = process.env.NEXT_PUBLIC_VIMEO_ACCESS_TOKEN as string
+    const vimeoToken = process.env.NEXT_PUBLIC_VIMEO_ACCESS_TOKEN as string;
 
     useEffect(() => {
         if(Cookies.get("token")){
@@ -115,6 +114,7 @@ interface Video {
     }
 
     const fetchYears = async (yearsUrl: string, selectedCourse: Course) => {
+
         try {
             setIsFetchLoading(true);
             setSelectedCourse(selectedCourse);
@@ -125,7 +125,7 @@ interface Video {
                   }
             })
 
-            const subFolders = await response.data.data
+            const subFolders = await response.data.data;
             setYears(subFolders.reverse())
         } catch(error) {
             console.error(error);
@@ -136,7 +136,7 @@ interface Video {
     }
 
     const fetchVideos = async (videosUrl: string, selectedYear: Year) => {
-      
+
         try {
             setIsVideoLoading(true)
             setIsListItemDisabled(true);
@@ -199,7 +199,7 @@ interface Video {
                               </>
                           )}
                       </div>
-                      <Videos videos={videos} isVideoLoading={isVideoLoading}/>
+                      <Videos  videos={videos} isVideoLoading={isVideoLoading}/>
                   </div></>
             ): (
             <Loading/>

@@ -1,15 +1,16 @@
+import { useState } from 'react';
 import styles from './Videos.module.css';
 import ReactLoading from 'react-loading';
 
 
-
-
     type VideosProps = {
-        videos: any[],
-        isVideoLoading: boolean
+        videos: any[];
+        isVideoLoading: boolean;
+      
     };
 
   const Videos: React.FC<VideosProps> = ({ videos, isVideoLoading}) => {
+    const [activeVideo, setActiveVideo] = useState<string | null>(null)
 
     return (
         <div className={styles.container}>
@@ -25,14 +26,26 @@ import ReactLoading from 'react-loading';
                     <>
                     <div className={styles.card} key={video.resource_key} >
                     <div className={styles.thumbnail}>
-                        <iframe
-                            loading="eager"
-                            src={video.player_embed_url}
-                            width="100%"
-                            height="100%"
-                            allow="autoplay; fullscreen"
-                            allowFullScreen
-                        ></iframe>
+                      
+                        {activeVideo === video.player_embed_url ?  (
+                          
+                               <iframe
+                               src={video.player_embed_url}
+                               width="100%"
+                               height="auto"
+                               allow="autoplay; fullscreen"
+                               allowFullScreen
+                               loading= 'lazy'
+                           ></iframe>
+                         
+                        ) : (
+                            <img
+                            src={video.pictures.base_link}
+                            alt={video.name}
+                            onMouseEnter={() => setActiveVideo(video.player_embed_url)}
+                            onMouseLeave={() => setActiveVideo(null)} 
+                        />
+                        )}
                     </div>
                     <div className={styles.content}>
                         <h3>{video.name}</h3>

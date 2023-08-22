@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import axios from 'axios';
+import NodeCache from 'node-cache';
 
 interface VideoResponse{
     total: number;
@@ -9,17 +10,28 @@ interface VideoResponse{
     data: []; 
 }
 
+const cache = new NodeCache({ stdTTL: 14400 }); 
+
 
 export default async function fetchVideos(req:NextApiRequest, res:NextApiResponse) {
     const videosUrl = req.query.url as string;
   try {
-    const response = await axios.get<VideoResponse>(`https://api.vimeo.com/${videosUrl}?sort=alphabetical`, {
+    const cachedVideos = cache.get(videosUrl);
+    if(cachedVideos){
+      console.log('Cache hit - fetching data from cache...');
+      res.status(200).json(cachedVideos);
+      return;
+    }
+
+    console.log('Cache miss - fetching data from API');
+    const response = await axios.get<VideoResponse>(`https://api.vimeo.com/${videosUrl}?sort=alphabetical&fields=name,player_embed_url,pictures.base_link`, {
       headers: {
         Authorization: `Bearer ${process.env.NEXT_PUBLIC_VIMEO_ACCESS_TOKEN}`, 
       }
     });
    
-    const videos = response.data
+    const videos = response.data;
+    cache.set(videosUrl, videos)
     res.status(response.status).json(videos);
   } catch (error) {
     console.error(error)

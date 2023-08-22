@@ -7,7 +7,7 @@ import axios from 'axios';
 export default async function fetchCourse(req:NextApiRequest, res:NextApiResponse) {
    
   try {
-    const response = await axios.get('https://api.vimeo.com/me/projects/17319211/items', {
+    const response = await axios.get('https://api.vimeo.com/me/projects/17319211/items?fields=folder.name,folder.metadata', {
       headers: {
         Authorization: `Bearer ${process.env.NEXT_PUBLIC_VIMEO_ACCESS_TOKEN}`, 
       }
