@@ -54,6 +54,7 @@ export default function Login() {
                 console.log('Token is missing in the response data')
             }
         } catch (error:any) {
+            setIsLoading(false)
             setError(error.response.data.message);
         } finally {
            if (status === 200){

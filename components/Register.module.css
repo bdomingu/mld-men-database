@@ -80,14 +80,13 @@
 }
 
 .errors {
-    color: #EAEAEA;
+    color: #740000;
     font-family: 'Zilla Slab', serif;
     font-style: normal;
     font-weight: 400;
     font-size: 1.25em;
 }
-/* Will need to add a toggle state so that the check functionality works OR will need to delete the 
-    appearance */
+
 
 .checkboxContainer input[type="checkbox"] {
     width: 25px;
