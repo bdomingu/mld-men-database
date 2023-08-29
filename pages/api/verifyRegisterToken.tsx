@@ -10,16 +10,13 @@ const verifyRegisterToken = async (req:NextApiRequest, res:NextApiResponse) => {
 
   const token = req.query.token as string;
   try {
-    const decoded = jwt.verify(token, secret) as jwt.JwtPayload
-
-    if (decoded) {
-        return res.status(200).send({message:"The link is valid."})
-
-    }
-    return res.status(400).send({message:"The link has expired or is invalid."})
+    const decodedToken = jwt.verify(token, secret) as jwt.JwtPayload;
+    return res.status(200).json({ message: 'Token verified successfully' });
 
   } catch (error:any) {
-    console.error('Error decoding token:', error.message);
+    console.error(error.message)
+    return res.status(500).json({ error: error.message });
+
 }
 }
 
