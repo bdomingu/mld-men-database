@@ -2,6 +2,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 import nodemailer from 'nodemailer';
 import jwt from 'jsonwebtoken';
 import sequelize from "./db";
+import User from './schemas/userSchema';
+
 
 (async () => {
   try {
@@ -29,6 +31,12 @@ const resetEmail = async (req:NextApiRequest, res:NextApiResponse) => {
 
         if(!email) {
             return res.status(400).send({message: 'Email is required.'})
+        }
+
+        const user = await User.findOne({where: {email:email}});
+
+        if(!user) {
+          return res.status(400).send({message: 'Email does not exist.'})
         }
 
         const token = jwt.sign({ email }, secretKey, {expiresIn:'1hr'});
