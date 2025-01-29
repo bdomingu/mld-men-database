@@ -8,7 +8,7 @@ const generateTokenLink = async (req:NextApiRequest, res:NextApiResponse) => {
     const { user, expirationTime } = req.body;
     const expiresIn = `${expirationTime}d`
     
-    const token = jwt.sign({user}, secret, {expiresIn})
+    const token = jwt.sign({user}, secret, {expiresIn:`${expirationTime}d` })
 
     const link = `${process.env.NEXT_PUBLIC_APP_URL}/register?token=${token}`
 

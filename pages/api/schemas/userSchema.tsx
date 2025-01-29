@@ -2,14 +2,7 @@ import { DataTypes, Model } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import sequelize from '../db';
 
-class User extends Model {
-  public id!: string; 
-  public name!: string; 
-  public email!: string;
-  public password!: string; 
-  public admin!: boolean;
-
-}
+class User extends Model {}
 
 User.init(
   {
