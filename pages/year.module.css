@@ -1,0 +1,25 @@
+.container {
+    background-color: #121212; 
+    min-height: 100vh;
+    padding: 2rem;
+    color: white;
+  }
+  
+  .title {
+    font-family: 'Zilla Slab', serif;
+    color: white;
+    text-align: center;
+    margin-top: 2rem;
+    font-weight: 400; 
+
+  }
+  
+  .blueLine {
+    width: 300px;          
+    height: 2px;          
+    background-color: #146DA6;
+    margin: 0 auto 2rem auto;
+    border-radius: 1px;
+  }
+  
+  

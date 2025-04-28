@@ -66,30 +66,45 @@
 
 .years {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding-top: 20px;
-    list-style: none;
-    gap: 4%;
-}
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 2rem 1rem;
+  }
+  
+  
 
-
-.years li {
-    flex-basis: calc(25% - 4%); 
-    box-sizing: border-box;
+.yearButton {
     font-family: 'Zilla Slab', serif;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 2em;
-    text-align: center;
+    font-size: 1.25em;
+    background-color: #2C2C2C;
     color: #EAEAEA;
+    padding: 1rem 2rem;
+    width: 90%;
+    max-width: 400px;
+    border: none;
+    border-radius: 12px;
     cursor: pointer;
-}
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+  }
+  
+  .yearButton:hover {
+    background-color: #146DA6;
+    color: white;
+    /* text-decoration: underline #ff4d4f; */
+    transform: translateY(-2px);
+  }
+  
+  .yearButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
 
-.selectedFolder {
-    text-decoration: underline #740000;
-   
-}
+  
+
 
 
 @media only screen and (max-width:1044px){
@@ -105,8 +120,8 @@
     }
 
     .years {
-        gap: 10%;
-    }
+        gap: 1.25rem;
+      }
 }
 
 @media only screen and (max-width:768px) {
@@ -128,12 +143,15 @@
     }
 
     .years {
-        gap: 15%;
-    }
+        gap: 1rem;
+        padding: 1.5rem 1rem;
+      }
 
-    .years li {
-        font-size: 1.5em;
-    }
+  
+    .yearButton {
+        font-size: 1.1em;
+        padding: 0.75rem 1.5rem;
+      }
     
 }
 
@@ -162,20 +180,19 @@
       font-size: 1.2em;
     }
 
+    .years {
+        gap: 0.75rem;
+      }
 
-    .years li {
-        font-size: 1.2em;
-    }
+    .yearButton {
+        font-size: 1em;
+      }
 
 }
 
 @media only screen and (max-width:350px) {
     .videoContainer {
         min-height: fit-content; 
-    }
-
-    .years li {
-        font-size: 1em;
     }
 
 
