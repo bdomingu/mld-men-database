@@ -38,7 +38,7 @@ export default async function fetchVideos(req:NextApiRequest, res:NextApiRespons
         Authorization: `Bearer ${process.env.NEXT_PUBLIC_VIMEO_ACCESS_TOKEN}`, 
       }
     });
-   
+    console.log(videosUrl)
     const videos = response.data;
     const videoNames = response.data.data.map(video => video);
 

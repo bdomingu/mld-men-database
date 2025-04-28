@@ -1,5 +1,13 @@
 import { Sequelize } from 'sequelize';
 
+console.log({
+  database: process.env.NEXT_PUBLIC_DATABASE,
+  username: process.env.NEXT_PUBLIC_USER,
+  password: process.env.NEXT_PUBLIC_PASSWORD,
+  host: process.env.NEXT_PUBLIC_HOST,
+  NODE_ENV: process.env.NODE_ENV,
+});
+
 const sequelize = new Sequelize({
   database: process.env.NEXT_PUBLIC_DATABASE,
   username: process.env.NEXT_PUBLIC_USER,
@@ -13,5 +21,4 @@ const sequelize = new Sequelize({
 });
 
 export default sequelize;
-
 

@@ -45,7 +45,7 @@ const Nav = () => {
 
     const handleLogout = async () => {
         setLoading(true)
-        const response = await axios.get('api/logout')
+        const response = await axios.get('/api/logout')
         const status = response.status;
         if(status === 200) {
             Cookies.remove('token', { path: '/' })

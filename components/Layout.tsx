@@ -12,7 +12,7 @@ const Layout: React.FC<LayoutProps> = ({children, footerColor}) => {
 
   return (
         <div >
-             <Nav  />
+             <Nav />
             <div style={{flex: 1}}>
               {children}
             </div>

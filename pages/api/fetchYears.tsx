@@ -17,6 +17,7 @@ export default async function fetchVideos(req:NextApiRequest, res:NextApiRespons
     }
 
     console.log('Cache miss - fetching data from API');
+    console.log(`url:${yearsUrl}`)
     const response = await axios.get(`https://api.vimeo.com/${yearsUrl}?fields=folder.name,folder.metadata`, {
       headers: {
         Authorization: `Bearer ${process.env.NEXT_PUBLIC_VIMEO_ACCESS_TOKEN}`, 
@@ -24,6 +25,7 @@ export default async function fetchVideos(req:NextApiRequest, res:NextApiRespons
     });
    
     const videos = response.data;
+    console.log(videos)
     cache.set(yearsUrl, videos)
     res.status(response.status).json(videos);
   } catch (error) {
