@@ -103,10 +103,82 @@
   }
   
 
+  .yearGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+    padding: 2rem;
+  }
   
-
-
-
+  .yearCard {
+    background-color: #2C2C2C;
+    color: #EAEAEA;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.2s ease;
+  }
+  
+  .yearCard:hover {
+    transform: translateY(-5px);
+  }
+  
+  
+  .yearTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #EAEAEA;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  
+  .quarterList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+  }
+  
+  .quarterButton {
+    background-color: #1F4E6C; /* a darker, moodier blue */
+    color: #EAEAEA;
+    border: 1px solid #146DA6; /* keeps it tied to your palette */
+    border-radius: 6px; /* not too round, clean edges */
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.15s ease;
+  }
+  
+  .quarterButton:hover {
+  background-color: #146DA6;
+  transform: translateY(-2px);
+}
+  
+  .quarterButton:hover {
+    background-color: #0F5C8E;
+    transform: scale(1.02);
+  }
+  
+  
+  @media (max-width: 640px) {
+    .yearGrid {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .yearCard {
+      width: 100%;
+      max-width: 300px;
+    }
+  }
+  
 @media only screen and (max-width:1044px){
     .videoContainer {
         min-height: fit-content;

@@ -5,7 +5,7 @@ import Layout from '@/components/Layout';
 import Videos from '@/components/Videos';
 import Loading from '@/components/Loading';
 import type {Video} from '@/components/Videos';
-import styles from '.././year.module.css';
+import styles from '../.././year.module.css';
 
 
 
@@ -16,7 +16,7 @@ interface VideoResponse {
 
 const YearVideosPage = () => {
   const router = useRouter();
-  const { uri, year } = router.query;
+  const { uri, year, quarter } = router.query;
 
   const [videos, setVideos] = useState<Video[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -27,7 +27,6 @@ const YearVideosPage = () => {
     
     if (uri && typeof uri === 'string') {
       const fetchVideos = async () => {
-        console.log(uri)
         try {
           const response = await axios.get<VideoResponse>(`/api/fetchVideos/?url=${uri}`, {
             headers: {
@@ -53,9 +52,10 @@ const YearVideosPage = () => {
       ) : (
         <>
         <div className={styles.container}>
-          <h1 className={styles.title}>{year} Videos</h1>
+          <h1 className={styles.title}>{year}</h1>
           <div className={styles.blueLine}></div>
-
+          <h2 className={styles.title}>{quarter} Videos</h2>
+        
           <Videos videos={videos} isVideoLoading={isLoading} />
           </div>
         </>

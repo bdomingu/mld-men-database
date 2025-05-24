@@ -16,7 +16,6 @@ export default async function fetchCourse(req:NextApiRequest, res:NextApiRespons
     const courses = response.data
     res.status(response.status).json(courses);
   } catch (error) {
-    console.error(error)
     res.status(500).json({ error: 'An error occurred' });
   }
 }

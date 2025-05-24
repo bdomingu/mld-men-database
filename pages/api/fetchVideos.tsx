@@ -26,19 +26,16 @@ export default async function fetchVideos(req:NextApiRequest, res:NextApiRespons
   try {
     const cachedVideos = cache.get(videosUrl);
     if(cachedVideos){
-      console.log('Cache hit - fetching data from cache...');
       res.status(200).json(cachedVideos);
       return;
     }
 
-    console.log('Cache miss - fetching data from API');
     
     const response = await axios.get<VideoResponse>(`https://api.vimeo.com/${videosUrl}?fields=name,player_embed_url,pictures.base_link&page=1&per_page=100`, {
       headers: {
         Authorization: `Bearer ${process.env.NEXT_PUBLIC_VIMEO_ACCESS_TOKEN}`, 
       }
     });
-    console.log(videosUrl)
     const videos = response.data;
     const videoNames = response.data.data.map(video => video);
 
@@ -63,7 +60,6 @@ export default async function fetchVideos(req:NextApiRequest, res:NextApiRespons
     cache.set(videosUrl, responseObject)
     res.status(response.status).json(responseObject);
   } catch (error) {
-    console.error(error)
     res.status(500).json({ error: 'An error occurred' });
   }
 }
