@@ -9,26 +9,40 @@ import Loading from '@/components/Loading';
 import ReactLoading from 'react-loading';
 import withAuth from '@/components/ProtectedRoute';
 
+
 interface Year {
-    folder: {
-        name: string
-        metadata:{
-            connections: {
-                videos: {
-                    uri: string
-                }
-            }
-        }
-    }
+  folder: {
+    name: string;
+    metadata: {
+      connections: {
+        items?: {
+          uri: string;
+          total: number;
+          options: string[];
+        };
+        videos?: {
+          uri: string;
+          total: number;
+          options: string[];
+        };
+        [key: string]: any; // optional catch-all if structure varies
+      };
+    };
+  };
+  subfolders?: Folder[];
 }
 
-interface YearResponse{
+
+
+
+interface YearResponse {
     total: number;
     page: number;
     per_page: number;
     paging: object;
-    data: []; 
-}
+    data: Year[]; // ✅ correct type
+  }
+  
 
 interface VideoResponse{
     total: number;
@@ -45,15 +59,27 @@ interface Video {
     player_embed_url: string;
 }
 
+interface Folder {
+    folder: {
+      name: string;
+      uri: string;
+      [key: string]: any;
+    };
+  }
+  
+  
+  interface FolderResponse {
+    data: Folder[];
+  }
+  
+
 
  const Video = () => {
-    const [years, setYears] = useState<Year[]>([])
+    const [quarters, setQuarters] = useState<Year[]>([])
     const [videos, setVideos] = useState<any[]>([]);
+    const [years, setYears] = useState<Year[]>([])
     const [isLoading, setIsLoading] = useState(true);
     const [isFetchLoading, setIsFetchLoading] = useState(false);
-    const [isVideoLoading, setIsVideoLoading] = useState(false);
-    const [selectedYear, setSelectedYear] = useState<Year | null>(null)
-    const [isListItemDisabled, setIsListItemDisabled] = useState(false);
 
 
     const vimeoToken = process.env.NEXT_PUBLIC_VIMEO_ACCESS_TOKEN as string;
@@ -66,63 +92,114 @@ interface Video {
         }
     }, []);
 
-    useEffect(() => {
+    const fetchSubfolders = async (folderUri: string): Promise<Folder[]> => {
+  try {
+    const response = await axios.get<FolderResponse>(`/api/fetchSubfolders?folderUri=${encodeURIComponent(folderUri)}`, {
+      headers: {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_VIMEO_ACCESS_TOKEN}`,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    return [];
+  }
+};
 
-        const fetchYears = async () => {
-            setIsLoading(true);
-            try {
-                const response = await axios.get<YearResponse>('api/fetchCourses', {
-                    headers: {
-                      Authorization: `Bearer ${process.env.NEXT_PUBLIC_VIMEO_ACCESS_TOKEN}`, 
-                    }
-                  });
-                
-                const folders: Year[] = response.data.data;
-                folders.sort((a, b) => a.folder.name.localeCompare(b.folder.name));
 
-                setYears(folders);
-            } catch(error) {
-                console.error(error);
-            } finally {
-                setIsLoading(false)
+useEffect(() => {
+    const fetchYearsAndQuarters = async () => {
+      setIsLoading(true);
+      try {
+        const response = await axios.get<YearResponse>('api/fetchCourses', {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_VIMEO_ACCESS_TOKEN}`,
+          },
+        });
+  
+        const folders = response.data.data;
+        const yearsWithQuarters = await Promise.all(
+          folders.map(async (year) => {
+
+            const uri = year.folder?.metadata?.connections?.items?.uri;
+        
+            if (uri) {
+              const subfolders = await fetchSubfolders(uri);
+              subfolders.sort((a, b) =>
+  a.folder.name.localeCompare(b.folder.name, undefined, { numeric: true })
+);
+return { ...year, subfolders };
+
+            } else {
+              return { ...year, subfolders: [] };
             }
-        };
-        fetchYears();
-    }, [vimeoToken])
+          })
+        );
+        yearsWithQuarters.sort((a, b) =>
+  a.folder.name.localeCompare(b.folder.name, undefined, { numeric: true })
+);
+        setYears(yearsWithQuarters);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+  
+    fetchYearsAndQuarters();
+  }, [vimeoToken]);
+  
+
   
     return (
         <Layout>
-            {Cookies.get('token') && !isLoading ?(
-                  <><div className={styles.textContainer}>
-                  <h1>Choose a year and quarter to get started</h1>
-                  <p>Below are MLD's courses since 2019</p>
-              </div><div className={styles.videoContainer}> 
-                      <div className={styles.years}>
-                              <>
-                              {years.map((year, index) => {
-                                  return (
-                                      <button
-                                      key={index}
-                                      onClick={() => { router.push({ 
-                                        pathname: `/videos/${year.folder.name}`,
-                                        query: {
-                                            uri: year.folder.metadata.connections.videos.uri,
-                                        },
-                                    });
-                                }}
-                                className={`${styles.yearButton}`}>{year.folder.name}
-                                </button>
-                                  );
-                              })}
-                              </>
-                    
-                      </div>
-                  </div></>
-            ): (
-            <Loading/>
-              
-            )}
-     </Layout>
+        {Cookies.get('token') && !isLoading ?(
+              <><div className={styles.textContainer}>
+              <h1>Courses</h1>
+              <p>Choose a course below to get started.</p>
+          </div><div className={styles.videoContainer}>
+           
+
+                  <div className={styles.years}>
+  {isFetchLoading ? (
+    <ReactLoading type="bubbles" color="#146DA6" height={200} width={100} />
+  ) : (
+    <>
+      <div className={styles.yearGrid}>
+  {years.map((year, index) => (
+    <div className={styles.yearCard} key={index}>
+      <h3 className={styles.yearTitle}>{year.folder.name}</h3>
+      <div className={styles.quarterList}>
+        {year.subfolders?.map((quarter, qIndex) => (
+          <button
+            key={qIndex}
+            className={styles.quarterButton}
+            onClick={() =>
+              router.push({
+                pathname: `/videos/${year.folder.name}/${quarter.folder.name}`,
+                query: {
+                  uri: quarter.folder?.metadata?.connections?.videos?.uri,
+                },
+              })
+            }
+          >
+            {quarter.folder?.name}
+          </button>
+        ))}
+      </div>
+    </div>
+  ))}
+</div>
+    </>
+  )}
+</div>
+
+                 
+              </div></>
+        ): (
+        <Loading/>
+          
+        )}
+ </Layout>
        
     )
  
